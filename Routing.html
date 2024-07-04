@@ -1,0 +1,31 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form with Redirect</title>
+</head>
+<body>
+    <iframe id="msForm" src="https://forms.office.com/r/vPqYbei3iN" width="640" height="480" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+
+    <script>
+        document.getElementById('msForm').onload = function() {
+            const iframe = document.getElementById('msForm');
+            const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        for (const node of mutation.addedNodes) {
+                            if (node.textContent.includes("Thank you")) { // Adjust the text to match the form's thank you message
+                                window.location.href = "https://www.google.com";
+                            }
+                        }
+                    }
+                });
+            });
+
+            observer.observe(iframeDocument.body, { childList: true, subtree: true });
+        };
+    </script>
+</body>
+</html>
